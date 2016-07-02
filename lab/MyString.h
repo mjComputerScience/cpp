@@ -7,6 +7,7 @@ class CMyString
 public:
     CMyString();
     ~CMyString();
+    CMyString(const CMyString &rhs);
 
 private:
     char* m_pszData;
@@ -17,4 +18,6 @@ public:
     const char* GetString() const;
     void Release();
     int GetLength() const;
+
+    CMyString& operator=(const CMyString &rhs);
 };

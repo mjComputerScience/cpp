@@ -11,6 +11,16 @@ CMyString::~CMyString()
 {
     Release();
 }
+CMyString::CMyString(const CMyString &rhs)
+    :CMyString()
+{
+    this->m_nLength = rhs.m_nLength;
+
+    this->Release();
+    this->m_pszData = new char[this->m_nLength + 1];
+
+    strcpy(this->m_pszData, rhs.m_pszData);
+}
 
 int CMyString::SetString(const char *pszParam)
 {
@@ -56,4 +66,15 @@ void CMyString::Release()
     }
     m_pszData = NULL;
     m_nLength = 0;
+}
+CMyString& CMyString::operator=(const CMyString &rhs)
+{
+    this->m_nLength = rhs.m_nLength;
+
+    this->Release();
+    this->m_pszData = new char[this->m_nLength + 1];
+
+    strcpy(this->m_pszData, rhs.m_pszData);
+
+    return *this;
 }
