@@ -14,12 +14,14 @@ CMyString::~CMyString()
 CMyString::CMyString(const CMyString &rhs)
     :CMyString()
 {
-    this->m_nLength = rhs.m_nLength;
-
-    this->Release();
-    this->m_pszData = new char[this->m_nLength + 1];
-
-    strcpy(this->m_pszData, rhs.m_pszData);
+/*     this->m_nLength = rhs.m_nLength;
+ * 
+ *     this->Release();
+ *     this->m_pszData = new char[this->m_nLength + 1];
+ * 
+ *     strcpy(this->m_pszData, rhs.m_pszData);
+ *     위에 코드.. 그냥 SetString()이랑 같은건데... */
+    this->SetString(rhs.GetString());
 }
 
 int CMyString::SetString(const char *pszParam)
@@ -69,12 +71,13 @@ void CMyString::Release()
 }
 CMyString& CMyString::operator=(const CMyString &rhs)
 {
-    this->m_nLength = rhs.m_nLength;
-
-    this->Release();
-    this->m_pszData = new char[this->m_nLength + 1];
-
-    strcpy(this->m_pszData, rhs.m_pszData);
-
+/*     this->m_nLength = rhs.m_nLength;
+ * 
+ *     this->Release();
+ *     this->m_pszData = new char[this->m_nLength + 1];
+ * 
+ *     strcpy(this->m_pszData, rhs.m_pszData);
+ *     위에 코드... 역시나 SetString이랑 같은건데..  */
+    this->SetString(rhs.GetString());
     return *this;
 }
