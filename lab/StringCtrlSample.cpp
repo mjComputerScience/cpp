@@ -2,19 +2,17 @@
 
 int main(int argc, const char *argv[])
 {
-    CMyString strData;
-    strData.SetString("Hello1");
-    std::cout << strData.GetString() << std::endl;
-    std::cout << strData.GetLength() << std::endl;
-    strData.SetString("Hello234");
-    std::cout << strData.GetString() << std::endl;
-    std::cout << strData.GetLength() << std::endl;
-    strData.SetString("");
-    std::cout << strData.GetString() << std::endl;
-    std::cout << strData.GetLength() << std::endl;
-    strData.SetString(NULL);
-    std::cout << strData.GetString() << std::endl;
-    std::cout << strData.GetLength() << std::endl;
+    CMyString strData, strTest;
+    strData.SetString("Hello");
+    strTest.SetString("World");
+
+    //copy generate
+    CMyString strNewData(strData);
+    std::cout << strNewData.GetString() << std::endl;
+    
+    // operator=
+    strNewData = strTest;
+    std::cout << strNewData.GetString() << std::endl;
 
     return 0;
 }
