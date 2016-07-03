@@ -15,7 +15,7 @@ CMyString::CMyString(const CMyString &rhs)
     :CMyString()
 {
 /*     this->m_nLength = rhs.m_nLength;
- * 
+ *
  *     this->Release();
  *     this->m_pszData = new char[this->m_nLength + 1];
  * 
