@@ -25,4 +25,5 @@ https://namu.wiki/w/Git<br>
 https://namu.wiki/w/GitHub
 
 github 사용법 배우기. 콘솔 명령어로 배우는게 좋습니다.<br>
-https://backlogtool.com/git-guide/kr/
+https://backlogtool.com/git-guide/kr/<br>
+https://try.github.io/
