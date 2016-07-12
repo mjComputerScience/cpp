@@ -9,7 +9,7 @@ C++ 스터디 과제제출용 레퍼지토리입니다.
 git init<br>
 git remote add origin https://github.com/mjComputerScience/cpp.git<br>
 git pull origin yourBranch<br>
-    // 위 커맨드를 치기 전에 웹에서 자신의 이름으로 branch를 만들어놓아야 합니다.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 위 커맨드를 치기 전에 웹에서 자신의 이름으로 branch를 만들어놓아야 합니다.<br>
 git branch yourBranch<br>
 git checkout yourBranch<br>
 git push --set-upstream origin yourBranch
