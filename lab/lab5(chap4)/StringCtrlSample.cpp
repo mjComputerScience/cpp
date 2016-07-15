@@ -5,7 +5,7 @@ CMyString TestFunc(void)
     CMyString strTest("TestFunc() return");
     std::cout << strTest << std::endl;
 
-    return strTest;
+    return std::move(strTest);
 }
 
 int main(int argc, const char *argv[])

@@ -12,6 +12,6 @@ int main(int argc, const char *argv[])
     ::TestFunc(strData);
     ::TestFunc(CMyString("World"));
 
-    //::TestFunc("Hello, world!"); // explicit 때문에 변환 불가
+    ::TestFunc("Hello, world!"); // explicit 때문에 변환 불가
     return 0;
 }

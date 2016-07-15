@@ -28,3 +28,4 @@ public:
 
     CMyString& operator=(const CMyString &rhs);
 };
+

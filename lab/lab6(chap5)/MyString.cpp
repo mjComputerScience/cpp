@@ -1,7 +1,6 @@
 #include <iostream>
 #include "MyString.h"
 
-
 CMyString::CMyString()
     : m_pszData(NULL)
     , m_nLength(0)
@@ -82,8 +81,44 @@ const char* CMyString::GetString() const
         return m_pszData;
 }
 
-int CMyString:: GetLength() const
+int CMyString::GetLength() const
 {
+    return m_nLength;
+}
+int CMyString::Append(const char* pszParam)
+{
+    //매개변수 유효성 검사
+    if(pszParam == NULL)
+        return 0;
+
+    int nLenParam = strlen(pszParam);
+
+    if(nLenParam ==0)
+        return 0;
+
+    //세트된 문자열이 없다면 새로 문자열을 할당한 것과 동일하게 처리함
+    if(m_pszData == NULL)
+    {
+        SetString(pszParam);
+
+        return m_nLength;
+    }
+
+    //현재 문자열의 길이 백업
+    int nLenCur = m_nLength;
+
+    // 두 문자열을 합쳐서 저장할 수 있는 메모리를 새로 할당함
+    char *pszResult = new char[nLenCur + nLenParam + 1];
+
+    // 문자열 조합
+    strncpy(pszResult, m_pszData, sizeof(char) * (nLenCur + 1));
+    strncpy(pszResult + (sizeof(char) * nLenCur), pszParam, sizeof(char) * (nLenParam + 1));
+
+    // 기존 문자열 삭제 및 멤버 정보 갱신
+    Release();
+    m_pszData = pszResult;
+    m_nLength = nLenCur + nLenParam;
+
     return m_nLength;
 }
 
@@ -106,5 +141,16 @@ CMyString& CMyString::operator=(const CMyString &rhs)
  *     strcpy(this->m_pszData, rhs.m_pszData);
  *     위에 코드... 역시나 SetString이랑 같은건데..  */
     this->SetString(rhs.GetString());
+    return *this;
+}
+CMyString CMyString::operator+(const CMyString &rhs)
+{
+    CMyString newStr(*this);
+    newStr.Append(rhs);
+    return std::move(newStr);
+}
+CMyString& CMyString::operator+=(const CMyString &rhs)
+{
+    Append(rhs);
     return *this;
 }
