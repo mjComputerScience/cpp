@@ -18,6 +18,8 @@ public:
 
     //operator overloading
     CMyString &operator = (const CMyString &rhs);
+    CMyString operator+(const CMyString &rhs);
+    CMyString &operator+=(const CMyString &rhs);
 
     //conversion operator
     operator char *() const;
@@ -34,6 +36,8 @@ public:
 
     int SetString(const char *pszParam);
     const char *GetString() const;
+    int GetLength() const;
+    int Append(const char *pszParam);
     void Release();
 
 };
