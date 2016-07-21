@@ -38,10 +38,57 @@ CMyString & CMyString::operator=(const CMyString &rhs)
     return *this;
 }
 
-CMyString operator+(const CMyString &rhs)
+CMyString CMyString::operator+(const CMyString &rhs)
+{
+    CMyString temp(*this);
+    temp.Append(rhs.GetString());
+
+    return temp;
+}
+
+CMyString &CMyString::operator+=(const CMyString &&rhs)
 {
     Append(rhs.GetString());
+
+    return *this;
 }
+
+int CMyString::operator==(const CMyString &rhs)
+{
+    if (m_pszData != nullptr && rhs.m_pszData != nullptr) 
+    {
+        if (strcmp(m_pszData, rhs.m_pszData) == 0) 
+        {
+            return 1;
+        }
+       
+        return 0;
+    }
+}
+
+int CMyString::operator!=(const CMyString &rhs)
+{
+    if(m_pszData!= nullptr && rhs.m_pszData != nullptr)
+    {
+        if (strcmp(m_pszData, rhs.m_pszData) == 0) 
+        {
+           return 0; 
+        }
+
+        return 1;
+    }
+}
+
+char CMyString::operator[](int nIndex) const
+{
+   return m_pszData[nIndex]; 
+}
+
+char &CMyString::operator[](int nIndex)
+{
+   return m_pszData[nIndex];
+}
+
 CMyString::operator char *() const
 {
     return m_pszData;
@@ -55,9 +102,9 @@ CMyString::~CMyString()
 int CMyString::SetString(const char *pszParam)
 {
     //check already has string
-    Release()
+    Release();
 
-    for (int i = 0; i < pszParam[i] != '\0'; i++) 
+    for (int i = 0; pszParam[i] != '\0'; i++) 
     {
         m_nLength++;
     }
@@ -110,10 +157,10 @@ int CMyString::Append(const char *pszParam)
     int nLenCur = m_nLength;
 
     char *pszResult = new char[nLenCur + nLenParam + 1];
+    strcpy(pszResult, m_pszData);
+    strcpy(pszResult + (sizeof(char) * nLenCur),
+            pszParam);
 
-    strcpy_s(pszResult, sizeof(char) * (nLenCur + 1), m_pszData);
-    strcpy_s(pszResult + (sizeof(char) * nLenCur),
-            sizeof(char) * (nLenParam + 1), pszParam);
 
     Release();
     m_pszData = pszResult;

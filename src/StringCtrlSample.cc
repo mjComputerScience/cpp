@@ -1,16 +1,30 @@
 #include "MyString.h"
 
-CMyString TestFunc()
-{
-    CMyString strTest("TestFunc() return");
-     std::cout << strTest << std::endl;
-
-     return strTest;
-}
-
 int main(int argc, const char *argv[])
 {
-    TestFunc();
+    CMyString strLeft("Test"), strRight("String");
+
+    if (strLeft == strRight) 
+    {
+        std::cout << "same string" << std::endl;
+    }
+
+    else 
+    {
+        std::cout << "different string" << std::endl;
+    }
+
+    strLeft = CMyString("String");
+
+    if (strLeft == strRight)
+    {
+        std::cout << "same" << std::endl;
+    }
+
+    else 
+    {
+        std::cout << "different" << std::endl;
+    }
 
     return 0;
 }

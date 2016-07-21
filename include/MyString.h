@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 
 class CMyString
 {
@@ -17,10 +18,15 @@ public:
     CMyString(CMyString &&rhs);
 
     //operator overloading
-    CMyString &operator = (const CMyString &rhs);
+    CMyString &operator=(const CMyString &rhs);
     CMyString operator+(const CMyString &rhs);
-    CMyString &operator+=(const CMyString &rhs);
+    CMyString &operator+=(const CMyString &&rhs);
+    int operator==(const CMyString &rhs);
+    int operator!=(const CMyString &rhs);
 
+    char operator[](int nIndex) const;
+    char &operator[](int nIndex);
+    
     //conversion operator
     operator char *() const;
 
