@@ -21,8 +21,6 @@ CMyString::CMyString(const char *pszParam)
 CMyString::CMyString(CMyString &&rhs)
     :m_nLength(0), m_pszData(nullptr)
 {
-    std::cout << "Call CMyString constructor" << std::endl;
-
     m_pszData = rhs.m_pszData;
     m_nLength = rhs.m_nLength;
 
@@ -113,7 +111,8 @@ int CMyString::SetString(const char *pszParam)
     {
         m_pszData = new char[m_nLength + 1];
 
-        for (int i = 0; i <= m_nLength; i++) {
+        for (int i = 0; i <= m_nLength; i++) 
+        {
             m_pszData[i] = pszParam[i];
         }
 
@@ -157,10 +156,8 @@ int CMyString::Append(const char *pszParam)
     int nLenCur = m_nLength;
 
     char *pszResult = new char[nLenCur + nLenParam + 1];
-    strcpy(pszResult, m_pszData);
-    strcpy(pszResult + (sizeof(char) * nLenCur),
-            pszParam);
-
+    strncpy(pszResult, m_pszData, sizeof(char) * (nLenCur + 1));
+    strncpy(pszResult + (sizeof(char) * nLenCur), pszParam, sizeof(char) * nLenParam);
 
     Release();
     m_pszData = pszResult;
