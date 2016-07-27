@@ -16,13 +16,15 @@ int CMyStringEx::Find(const char *pszParam)
     return -1;
 }
 
-int CMyStringEx::SetString(const char *pszParam)
+int CMyStringEx::OnSetString(char *pszData)
 {
-    if(strncmp(pszParam, "fuck", 4) == 0)
+    if(strncmp(pszData, "fuck", 4) == 0)
     {
-        return CMyString::SetString("It's bad word boy");
+        delete pszData;
+        pszData = new char[9];
+        strncpy(pszData, "bad word", 8);
+        pszData[9] = '\0';
     }
 
-    else
-        return CMyString::SetString(pszParam);
+    return strlen(pszData);
 }

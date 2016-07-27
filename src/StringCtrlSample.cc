@@ -1,9 +1,11 @@
-#include "MyStringEx.h" 
+#include "MyString.h" 
 
 int main(int argc, const char *argv[])
 {
-    CMyStringEx strLeft("Hello"), strRight("It's me");
-    std::cout << strLeft + strRight << std::endl;
+    CMyString b("World"), c;
+
+    c = "Hello " + b;
+    std::cout << c << std::endl;
 
     return 0;
 }

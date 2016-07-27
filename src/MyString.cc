@@ -77,6 +77,15 @@ int CMyString::operator!=(const CMyString &rhs)
     }
 }
 
+CMyString operator+(const char *pszParam, const CMyString &strParam)
+{
+   CMyString strResult(pszParam);
+   std::cout << strParam.m_pszData << std::endl;
+   strResult.Append(strParam.m_pszData);
+
+   return strResult;
+}
+
 char CMyString::operator[](int nIndex) const
 {
    return m_pszData[nIndex]; 
@@ -90,8 +99,7 @@ char &CMyString::operator[](int nIndex)
 CMyString::operator char *() const
 {
     return m_pszData;
-}
-
+} 
 CMyString::~CMyString()
 {
     Release();
@@ -102,24 +110,26 @@ int CMyString::SetString(const char *pszParam)
     //check already has string
     Release();
 
-    for (int i = 0; pszParam[i] != '\0'; i++) 
-    {
-        m_nLength++;
-    }
+    if(pszParam == nullptr)
+        return 0;
 
-    if (m_nLength > 0) 
-    {
-        m_pszData = new char[m_nLength + 1];
+    int nLength = strlen(pszParam);
 
-        for (int i = 0; i <= m_nLength; i++) 
-        {
-            m_pszData[i] = pszParam[i];
-        }
+    if(nLength == 0)
+        return 0;
 
-        m_pszData[m_nLength] = '\0';
-    }
+    m_pszData = new char[nLength + 1];
 
-    return 0;
+    strncpy(m_pszData, pszParam, sizeof(char) * (nLength + 1));
+    m_nLength = nLength;
+
+    m_nLength = OnSetString(m_pszData);
+    return m_nLength;
+}
+
+int CMyString::OnSetString(char *pszData)
+{
+    return m_nLength; 
 }
 
 const char *CMyString::GetString() const

@@ -9,7 +9,7 @@ public:
     using CMyString::CMyString;
 
     int Find(const char *pszParam);
-    int SetString(const char *pszParam);
+    virtual int OnSetString(char *pszData);
 
 private:
     /* data */

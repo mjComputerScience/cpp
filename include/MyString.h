@@ -28,8 +28,11 @@ public:
     char operator[](int nIndex) const;
     char &operator[](int nIndex);
     
+    friend CMyString operator+(const char *pszParam, const CMyString &strparam);
+
     //conversion operator
     operator char *() const;
+
 
     //default destructor
     ~CMyString();
@@ -42,9 +45,12 @@ private:
 public:
 
     int SetString(const char *pszParam);
+    virtual int OnSetString(char *pszData);
     const char *GetString() const;
     int GetLength() const;
     int Append(const char *pszParam);
     void Release();
 
 };
+
+
