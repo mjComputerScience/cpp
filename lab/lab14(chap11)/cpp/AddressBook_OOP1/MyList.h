@@ -1,0 +1,25 @@
+#pragma once
+
+#include "UserData.h"
+
+class CMyList
+{
+public:
+    CMyList();
+    ~CMyList();
+
+protected:
+    void ReleaseList(void);
+    CUserData m_Head;
+
+public:
+    static char* DATA_FILE_NAME;
+    int LoadList(char *pszFileName);
+    int SaveList(char *pszFileName);
+    CUserData* FindNode(const char* pszName);
+    int AddNewNode(const char* pszName, const char* pszPhone);
+
+    void PrintAll(void);
+
+    int RemoveNode(const char* pszName);
+};

@@ -1,5 +1,4 @@
 #include "UserInterface.h"
-#include "UserData.h"
 #include <iostream>
 
 CUserInterface::CUserInterface(CMyList &rList)
@@ -41,14 +40,13 @@ void CUserInterface::Add(void)
     if( (tempStr=strchr(szPhone, '\n')) != nullptr)
         *tempStr = '\0';
 
-
-    m_List.AddNewNode(new CUserData(szName, szPhone));
+    m_List.AddNewNode(szName, szPhone);
 }
 
 void CUserInterface::Search(void)
 {
     char szName[32] = {0};
-    CMyNode *pNode = nullptr;
+    CUserData *pNode = nullptr;
     char* tempStr = nullptr;
 
     printf("Input name : ");
@@ -60,7 +58,10 @@ void CUserInterface::Search(void)
     pNode = m_List.FindNode(szName);
     if(pNode != nullptr)
     {
-        pNode->PrintNode();
+        printf("[%p] %s\t%s [%p]\n",
+                pNode,
+                pNode->GetName(), pNode->GetPhone(),
+                pNode->GetNext());
     }
 
     else
@@ -118,7 +119,8 @@ int CUserInterface::Run(void)
                 Search();
                 break;
             case 3: //Print all
-                this->PrintAll();
+                /** 여기 PrintAll()이 아니라 m_List.PrintAll() 아닌가? **/
+                m_List.PrintAll();
                 break;
             case 4: //Remove
                 Remove();
@@ -127,20 +129,4 @@ int CUserInterface::Run(void)
     }
 
     return nMenu;
-}
-
-void CUserInterface::PrintAll(void)
-{
-    // 리스트에 대한 열거자를 생성한다.
-    CMyIterator it = m_List.MakeIterator();
-    CUserData *pNode = nullptr;
-
-    //열거자를 이용해 리스트 전체에 접근한다.
-    while((pNode = static_cast<CUserData*> (it.GetCurrent())) != nullptr)
-    {
-        pNode->PrintNode();
-        it.MoveNext();
-    }
-
-    getchar();
 }

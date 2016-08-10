@@ -31,7 +31,7 @@ int CMyList::LoadList(char *pszFileName)
 
     ReleaseList();
 
-    while(fread((user = new CUserData()), sizeof(CUserData), 1, fp))
+    while(fread((user = new CUserData), sizeof(CUserData), 1, fp))
         AddNewNode(user);
 
     fclose(fp);
@@ -76,10 +76,23 @@ int CMyList::AddNewNode(CMyNode *pNewNode)
     pNewNode->pNext = m_pHead->pNext;
     m_pHead->pNext = pNewNode;
 
-    // 미래를 위해 추가해놓는 OnAddNewNode
-    OnAddNewNode(pNewNode);
-
     return 1;
+}
+
+void CMyList::PrintAll(void)
+{
+    CMyNode *pTmp = m_pHead->pNext;
+    
+    while(pTmp != nullptr)
+    {
+        pTmp->PrintNode();
+        pTmp = pTmp->pNext;
+    }
+
+    printf("CUserData Counter : %d\n", CUserData::GetUserDataCounter());
+    
+    /** _getch(); */
+    getchar();
 }
 
 CMyNode* CMyList::FindNode(const char* pszName)
@@ -132,15 +145,4 @@ void CMyList::ReleaseList(void)
 
         delete pDelete;
     }
-}
-
-CMyIterator CMyList::MakeIterator()
-{
-    CMyIterator it(m_pHead);
-    return it;
-}
-
-int CMyList::OnAddNewNode(CMyNode *pNewNode)
-{
-    return 0;
 }

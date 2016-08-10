@@ -1,6 +1,5 @@
 #pragma once
 #include "MyNode.h"
-#include "CMyStringEx.h"
 
 // CMyNode 클래스의 파생 클래스로 변경
 class CUserData : public CMyNode
@@ -10,13 +9,13 @@ public:
     CUserData(const char* pszName, const char* pszPhone);
     ~CUserData(void);
 
-    const char* GetName(void) const {return strName;}
-    const char* GetPhone(void) const {return strPhone;}
+    const char* GetName(void) const {return szName;}
+    const char* GetPhone(void) const {return szPhone;}
     static int GetUserDataCounter(void) { return nUserDataCounter; }
 
 protected:
-    CMyStringEx strName;    // 이름
-    CMyStringEx strPhone;   // 전화번호
+    char szName[32] = {0};    // 이름
+    char szPhone[32] = {0};   // 전화번호
 
     // pNext 멤버가 사라졌다!
     static int nUserDataCounter;

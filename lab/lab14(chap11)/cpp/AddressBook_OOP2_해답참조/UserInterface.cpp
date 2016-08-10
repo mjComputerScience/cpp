@@ -118,7 +118,8 @@ int CUserInterface::Run(void)
                 Search();
                 break;
             case 3: //Print all
-                this->PrintAll();
+                /** 여기 PrintAll()이 아니라 m_List.PrintAll() 아닌가? **/
+                m_List.PrintAll();
                 break;
             case 4: //Remove
                 Remove();
@@ -127,20 +128,4 @@ int CUserInterface::Run(void)
     }
 
     return nMenu;
-}
-
-void CUserInterface::PrintAll(void)
-{
-    // 리스트에 대한 열거자를 생성한다.
-    CMyIterator it = m_List.MakeIterator();
-    CUserData *pNode = nullptr;
-
-    //열거자를 이용해 리스트 전체에 접근한다.
-    while((pNode = static_cast<CUserData*> (it.GetCurrent())) != nullptr)
-    {
-        pNode->PrintNode();
-        it.MoveNext();
-    }
-
-    getchar();
 }

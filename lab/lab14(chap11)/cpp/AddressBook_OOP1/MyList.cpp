@@ -1,13 +1,10 @@
 #include "MyList.h"
-#include "UserData.h"
 #include <iostream>
 
 char* CMyList::DATA_FILE_NAME = new char[32];
 
-CMyList::CMyList(CMyNode *pHead)
+CMyList::CMyList()
 {
-    m_pHead = pHead;
-    
     char datName[32] = "Address.dat";
     strncpy(DATA_FILE_NAME, datName, sizeof(datName));
     LoadList(DATA_FILE_NAME);
@@ -22,8 +19,8 @@ CMyList::~CMyList()
 
 int CMyList::LoadList(char *pszFileName)
 {
-    FILE *fp = nullptr;
-    CUserData* user = nullptr;
+    FILE *fp = NULL;
+    CUserData user;
 
     fp = fopen(pszFileName, "rb");
     if(fp == nullptr)
@@ -31,8 +28,8 @@ int CMyList::LoadList(char *pszFileName)
 
     ReleaseList();
 
-    while(fread((user = new CUserData), sizeof(CUserData), 1, fp))
-        AddNewNode(user);
+    while(fread(&user, sizeof(CUserData), 1, fp))
+        AddNewNode(user.szName, user.szPhone);
 
     fclose(fp);
     return 1;
@@ -41,7 +38,7 @@ int CMyList::LoadList(char *pszFileName)
 int CMyList::SaveList(char *pszFileName)
 {
     FILE *fp = NULL;
-    CMyNode *pTmp = m_pHead->pNext;
+    CUserData *pTmp = m_Head.pNext;
 
     fp = fopen(pszFileName, "wb");
 
@@ -57,7 +54,7 @@ int CMyList::SaveList(char *pszFileName)
     while(pTmp != nullptr)
     {
         if(fwrite(pTmp, sizeof(CUserData), 1, fp) != 1)
-            printf("ERROR: %s에 대한 정보를 저장하는데 실패했습니다.\n", pTmp ->GetKey());
+            printf("ERROR: %s에 대한 정보를 저장하는데 실패했습니다.\n", pTmp ->szName);
 
         pTmp = pTmp->pNext;
     }
@@ -65,27 +62,41 @@ int CMyList::SaveList(char *pszFileName)
     return 1;
 }
 
-int CMyList::AddNewNode(CMyNode *pNewNode)
+int CMyList::AddNewNode(const char* pszName, const char* pszPhone)
 {
-    if(FindNode(pNewNode->GetKey()) != nullptr)
-    {
-        delete pNewNode;
-        return 0;
-    }
+    CUserData* pNewUser = nullptr;
 
-    pNewNode->pNext = m_pHead->pNext;
-    m_pHead->pNext = pNewNode;
+    //같은 이름이 이미 존재하는지 확인한다.
+    if(FindNode(pszName) != nullptr)
+        return 0;
+
+    // 메모리를 확보한다.
+    pNewUser = new CUserData();
+
+    // 메모리 값을 저장한다.
+    /** sprint_S 대신 snprintf */
+    snprintf(pNewUser->szName, sizeof(pNewUser->szName), "%s", pszName);
+    snprintf(pNewUser->szPhone, sizeof(pNewUser->szPhone), "%s", pszPhone);
+    pNewUser->pNext = NULL;
+
+    // 더미 노드 바로 뒤에 붙인다. 따라서 가장 최근에
+    // 추가한 데이터가 가장 앞쪽에 온다.
+    pNewUser->pNext = m_Head.pNext;
+    m_Head.pNext = pNewUser;
 
     return 1;
 }
 
 void CMyList::PrintAll(void)
 {
-    CMyNode *pTmp = m_pHead->pNext;
-    
+    CUserData* pTmp = m_Head.pNext;
     while(pTmp != nullptr)
     {
-        pTmp->PrintNode();
+        printf("[%p] %s\t%s [%p]\n",
+                pTmp,
+                pTmp->szName, pTmp->szPhone,
+                pTmp->pNext);
+
         pTmp = pTmp->pNext;
     }
     
@@ -93,12 +104,12 @@ void CMyList::PrintAll(void)
     getchar();
 }
 
-CMyNode* CMyList::FindNode(const char* pszName)
+CUserData* CMyList::FindNode(const char* pszName)
 {
-    CMyNode *pTmp = m_pHead->pNext;
+    CUserData *pTmp = m_Head.pNext;
     while(pTmp != nullptr)
     {
-        if(strcmp(pTmp->GetKey(), pszName) == 0)
+        if(strcmp(pTmp->szName, pszName) == 0)
             return pTmp;
 
         pTmp = pTmp -> pNext;
@@ -110,14 +121,14 @@ CMyNode* CMyList::FindNode(const char* pszName)
 
 int CMyList::RemoveNode(const char* pszName)
 {
-    CMyNode* pPrevNode = m_pHead;
-    CMyNode* pDelete = nullptr;
+    CUserData* pPrevNode = &m_Head;
+    CUserData* pDelete = nullptr;
 
     while(pPrevNode->pNext != nullptr)
     {
         pDelete = pPrevNode->pNext;
 
-        if(strcmp(pDelete->GetKey(), pszName) == 0)
+        if(strcmp(pDelete->szName, pszName) == 0)
         {
             pPrevNode->pNext = pDelete->pNext;
             delete pDelete;
@@ -133,8 +144,8 @@ int CMyList::RemoveNode(const char* pszName)
 
 void CMyList::ReleaseList(void)
 {
-    CMyNode *pTmp = m_pHead->pNext;
-    CMyNode *pDelete = nullptr;
+    CUserData *pTmp = m_Head.pNext;
+    CUserData *pDelete = nullptr;
 
     while(pTmp != nullptr)
     {
@@ -143,4 +154,6 @@ void CMyList::ReleaseList(void)
 
         delete pDelete;
     }
+
+    memset(&m_Head, 0, sizeof(CUserData));
 }
