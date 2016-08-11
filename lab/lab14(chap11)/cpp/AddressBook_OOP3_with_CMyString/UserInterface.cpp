@@ -1,5 +1,6 @@
 #include "UserInterface.h"
 #include "UserData.h"
+#include "MyList.h" // MAX_STR_SIZE 쓰기 위해 추가
 #include <iostream>
 
 CUserInterface::CUserInterface(CMyList &rList)
@@ -26,7 +27,7 @@ void CUserInterface::Add(void)
     fgets(szName, sizeof(szName), stdin);
     /** fgets는 \n까지 받으므로 \n을 NULL문자로 바꿔주어야 한다.
      * 지정한 크기를 넘도록 스트링을 받으면 \n를 받지 않는다. **/
-    if( (tempStr=strchr(szName, '\n')) != nullptr)
+    if( (tempStr=static_cast<char*>(memchr(szName, '\n', MAX_STR_SIZE))) != nullptr) /** strchr() 대신 memchr()을 쓰자 **/
         *tempStr = '\0';
 
 
@@ -38,7 +39,7 @@ void CUserInterface::Add(void)
     fgets(szPhone, sizeof(szPhone), stdin);
     /** fgets는 \n까지 받으므로 \n을 NULL문자로 바꿔주어야 한다.
      * 지정한 크기를 넘도록 스트링을 받으면 \n를 받지 않는다. **/
-    if( (tempStr=strchr(szPhone, '\n')) != nullptr)
+    if( (tempStr=static_cast<char*>(memchr(szPhone, '\n', MAX_STR_SIZE))) != nullptr) /** strchr() 대신 memchr()을 쓰자 **/
         *tempStr = '\0';
 
 
@@ -70,6 +71,7 @@ void CUserInterface::Search(void)
 
     /** _getch(); */
     getchar();
+    rewind(stdin);
 }
 
 void CUserInterface::Remove(void)
@@ -96,6 +98,7 @@ int CUserInterface::PrintUI(void)
     printf("[1] Add\t [2] Search\t [3] Print all\t [4] Remove\t [0] Exit\n:");
 
     // 사용자가 선택한 메뉴의 값을 반환한다.
+    /** scanf 형식지정자에 제한을 걸어서 buffer overflow 방지 **/
     scanf("%3d", &nInput);
     rewind(stdin);
 
@@ -142,5 +145,8 @@ void CUserInterface::PrintAll(void)
         it.MoveNext();
     }
 
+    printf("CUserData Counter : %d\n", CUserData::GetUserDataCounter() - 1);
+
     getchar();
+    rewind(stdin);
 }

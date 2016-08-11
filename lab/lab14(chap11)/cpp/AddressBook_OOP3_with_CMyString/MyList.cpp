@@ -50,6 +50,7 @@ int CMyList::SaveList(char *pszFileName)
         puts("ERROR: 리스트 파일을 쓰기 모드로 열지 못했습니다.");
         /** _getch(); */
         getchar();
+        rewind(stdin);
 
         return 0;
     }
@@ -69,6 +70,10 @@ int CMyList::AddNewNode(CMyNode *pNewNode)
 {
     if(FindNode(pNewNode->GetKey()) != nullptr)
     {
+        /** 겹치는 key가 있을 때 에러메세지 추가 **/
+        printf("ERROR: 이미 %s을/를 가진 인스턴스가 존재합니다.", pNewNode->GetKey());
+        getchar();
+        rewind(stdin);
         delete pNewNode;
         return 0;
     }
@@ -90,7 +95,7 @@ CMyNode* CMyList::FindNode(const char* pszName)
     CMyNode *pTmp = m_pHead->pNext;
     while(pTmp != nullptr)
     {
-        if(strcmp(pTmp->GetKey(), pszName) == 0)
+        if(MJstrcmp(pTmp->GetKey(), pszName) == 0)
             return pTmp;
 
         pTmp = pTmp -> pNext;
@@ -109,7 +114,7 @@ int CMyList::RemoveNode(const char* pszName)
     {
         pDelete = pPrevNode->pNext;
 
-        if(strcmp(pDelete->GetKey(), pszName) == 0)
+        if(MJstrcmp(pDelete->GetKey(), pszName) == 0)
         {
             pPrevNode->pNext = pDelete->pNext;
             delete pDelete;
@@ -146,4 +151,12 @@ CMyIterator CMyList::MakeIterator()
 int CMyList::OnAddNewNode(CMyNode *pNewNode)
 {
     return 1;
+}
+
+int CMyList::MJstrcmp(const char* str1, const char* str2)
+{
+    int str1Size = strnlen(str1, MAX_STR_SIZE);
+    int str2Size = strnlen(str2, MAX_STR_SIZE);
+
+    return strncmp(str1, str2, str1Size > str2Size ? str1Size : str2Size);
 }

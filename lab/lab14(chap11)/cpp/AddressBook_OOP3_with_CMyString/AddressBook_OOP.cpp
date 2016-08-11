@@ -4,7 +4,7 @@
 
 int main(int argc, const char *argv[])
 {
-    CUserData* header = new CUserData();
+    CUserData* header = new CUserData("Dummy", "Head");
 
     CMyList DB(header);
     CUserInterface UI(DB);

@@ -3,6 +3,8 @@
 #include "MyNode.h"
 #include "MyIterator.h"
 
+#define MAX_STR_SIZE 32
+
 // 노드 클래스에 대한 알림 선언
 class CMyNode;
 
@@ -33,4 +35,7 @@ public:
 
     // 데이터가 추가될 때마다 호출되는 가상함수
     virtual int OnAddNewNode(CMyNode* pNewNode);
+
+    /** strncmp를 쉽게 사용하기 위해 MJstrcmp를 만듦 **/
+    int MJstrcmp(const char* str1, const char* str2);
 };
